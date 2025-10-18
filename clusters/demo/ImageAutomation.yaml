@@ -1,0 +1,49 @@
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: kbot
+  namespace: demo
+spec:
+  image: ghcr.io/vkamlov/kbot-src
+  interval: 1m
+  secretRef:
+    name: github-auth
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: kbot
+  namespace: demo
+spec:
+  imageRepositoryRef:
+    name: kbot
+  filterTags:
+    extract: $ts
+    pattern: ^v.+-ts(?P<ts>[0-9]+)  # Extract timestamp from tags like vX.Y.Z-ts1234567890
+  policy:
+    numerical:
+      order: asc
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageUpdateAutomation
+metadata:
+  name: kbot-update
+  namespace: demo
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  git:
+    checkout:
+      ref:
+        branch: imageautomation
+    commit:
+      author:
+        email: fluxcdbot@users.noreply.github.com
+        name: fluxcdbot
+    push:
+      branch: imageautomation
+  update:
+    path: ./clusters/demo
