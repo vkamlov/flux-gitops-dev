@@ -18,11 +18,10 @@ spec:
   imageRepositoryRef:
     name: kbot
   filterTags:
-    extract: $ts
-    pattern: ^v.+-ts(?P<ts>[0-9]+)  # Extract timestamp from tags like vX.Y.Z-ts1234567890
+    pattern: ^v\d+\.\d+\.\d+$
   policy:
-    numerical:
-      order: asc
+    semver:
+      range: '>=0.0.0'
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageUpdateAutomation
