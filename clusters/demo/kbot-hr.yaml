@@ -17,7 +17,7 @@ spec:
       kind: OCIRepository
       metadata:
         name: kbot
-        namespace: << input.kbot-chart.provider.namespace >>
+        namespace: << inputs.kbot-chart.provider.namespace >>
       spec:
         interval: 1m
         url: oci://ghcr.io/vkamlov/charts/kbot
@@ -27,7 +27,7 @@ spec:
       kind: HelmRelease
       metadata:
         name: kbot-gitless
-        namespace: << input.kbot-chart.provider.namespace >>
+        namespace: << inputs.kbot-chart.provider.namespace >>
       spec:
         interval: 1m0s
         releaseName: kbot-gitless
