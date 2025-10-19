@@ -1,7 +1,7 @@
 apiVersion: fluxcd.controlplane.io/v1
 kind: ResourceSetInputProvider
 metadata:
-  name: kbot_chart
+  name: kbot-chart
   namespace: demo-gitless
 spec:
   type: OCIArtifactTag
@@ -13,7 +13,7 @@ spec:
 apiVersion: fluxcd.controlplane.io/v1
 kind: ResourceSetInputProvider
 metadata:
-  name: kbot_image
+  name: kbot-image
   namespace: demo-gitless
 spec:
   type: OCIArtifactTag

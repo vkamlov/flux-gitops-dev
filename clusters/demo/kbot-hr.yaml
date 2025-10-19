@@ -9,9 +9,9 @@ spec:
     name: Permute
   inputsFrom:
     - kind: ResourceSetInputProvider
-      name: kbot_chart
+      name: kbot-chart
     - kind: ResourceSetInputProvider
-      name: kbot_image
+      name: kbot-image
   resources:
     - apiVersion: source.toolkit.fluxcd.io/v1
       kind: OCIRepository
