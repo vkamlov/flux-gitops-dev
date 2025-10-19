@@ -14,5 +14,10 @@ spec:
         name: kbot
   interval: 1m0s
   values:
-    image:
-      tag: 2.2.6
+    gateway:
+      hostname: "gitless-kbot.k3s.comelove.pp.ua"
+  postRenderers:
+    - kustomize:
+        images:
+          - name: ghcr.io/vkamlov/kbot-src
+            newTag: << inputs.kbot_image.tag | quote >>
