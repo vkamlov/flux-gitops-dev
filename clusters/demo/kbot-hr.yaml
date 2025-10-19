@@ -9,9 +9,9 @@ spec:
     name: Permute
   inputsFrom:
     - kind: ResourceSetInputProvider
-      name: kbot-chart
+      name: kbot_chart
     - kind: ResourceSetInputProvider
-      name: kbot-image
+      name: kbot_image
   resources:
     - apiVersion: source.toolkit.fluxcd.io/v1
       kind: OCIRepository
@@ -22,7 +22,7 @@ spec:
         interval: 1m
         url: oci://ghcr.io/vkamlov/charts/kbot
         ref:
-          tag: << inputs.kbot-chart.provider.tag >>
+          tag: << inputs.kbot_chart.provider.tag >>
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
       metadata:
@@ -36,6 +36,6 @@ spec:
           name: kbot
         values:
           image:
-            tag: << inputs.kbot-image.provider.tag >>
+            tag: << inputs.kbot_image.provider.tag >>
           gateway:
             hostname: "gitless-kbot.k3s.comelove.pp.ua"
