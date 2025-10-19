@@ -20,4 +20,4 @@ spec:
     - kustomize:
         images:
           - name: ghcr.io/vkamlov/kbot-src
-            newTag: << inputs.kbot-src_image.tag | quote >>
+            newTag: << inputs.image.tag | quote >>
