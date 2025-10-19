@@ -1,23 +1,41 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
+apiVersion: fluxcd.controlplane.io/v1
+kind: ResourceSet
 metadata:
-  name: kbot
+  name: kbot-gitless
   namespace: demo-gitless
 spec:
-  chart:
-    spec:
-      chart: ./helm
-      reconcileStrategy: ChartVersion
-      sourceRef:
-        kind: GitRepository
+  inputStrategy:
+    name: Permute
+  inputsFrom:
+    - kind: ResourceSetInputProvider
+      name: kbot-chart
+    - kind: ResourceSetInputProvider
+      name: kbot-image
+  resources:
+    - apiVersion: source.toolkit.fluxcd.io/v1
+      kind: OCIRepository
+      metadata:
         name: kbot
-  interval: 1m0s
-  values:
-    gateway:
-      hostname: "gitless-kbot.k3s.comelove.pp.ua"
-  postRenderers:
-    - kustomize:
-        images:
-          - name: ghcr.io/vkamlov/kbot-src
-            newTag: << inputs.image.tag | quote >>
+        namespace: << input.kbot-chart.provider.namespace >>
+      spec:
+        interval: 1m
+        url: oci://ghcr.io/vkamlov/charts/kbot
+        ref:
+          tag: << inputs.kbot-chart.provider.tag >>
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      metadata:
+        name: kbot-gitless
+        namespace: << input.kbot-chart.provider.namespace >>
+      spec:
+        interval: 1m0s
+        releaseName: kbot-gitless
+        chartRef:
+          kind: OCIRepository
+          name: kbot
+        values:
+          image:
+            tag: << inputs.kbot-image.provider.tag >>
+          gateway:
+            hostname: "gitless-kbot.k3s.comelove.pp.ua"
