@@ -22,7 +22,7 @@ spec:
         interval: 1m
         url: oci://ghcr.io/vkamlov/charts/kbot
         ref:
-          tag: << inputs.kbot_chart.provider.tag >>
+          tag: << inputs.tag >>
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
       metadata:
@@ -36,6 +36,6 @@ spec:
           name: kbot
         values:
           image:
-            tag: << inputs.kbot_image.provider.tag >>
+            tag: << inputs.tag >>
           gateway:
             hostname: "gitless-kbot.k3s.comelove.pp.ua"
